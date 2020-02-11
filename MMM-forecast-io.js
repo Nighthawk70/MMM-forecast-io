@@ -227,10 +227,14 @@ Module.register("MMM-forecast-io", {
     var humidity = document.createElement("span");
     humidity.innerHTML = "Humidity: " + this.weatherData.currently.humidity * 100 + "%";
     humidityDew.appendChild(humidity);
-
+    
     var sunriseSunset = document.createElement("div");
     sunriseSunset.className = "small dimmed sunrise-sunset";
-
+    
+    var daylightTotal = document.createElement("span");
+    daylightTotal.innerHTML = "Day Length: " + moment.utc(moment(daily.data[0].sunsetTime).diff(moment(daily.data[0].sunriseTime)) * 1000).format("HH:mm") + " ";
+    sunriseSunset.appendChild(daylightTotal);
+    
     var sunriseIcon = document.createElement("span");
     sunriseIcon.className = "wi wi-sunrise";
     sunriseSunset.appendChild(sunriseIcon);
@@ -246,13 +250,7 @@ Module.register("MMM-forecast-io", {
     var sunsetTime = document.createElement("span");
     sunsetTime.innerHTML = moment(new Date(daily.data[0].sunsetTime * 1000)).format("LT") + " ";
     sunriseSunset.appendChild(sunsetTime);
-/*   
-    var daylightTotal = document.createElement("span");
-    var rise = this.daily.data[0].sunriseTime;
-    var set = this.daily.data[0].sunsetTime;
-    daylightTotal.innerHTML = moment.duration(set.diff(rise));
-    sunriseSunset.appendChild(daylightTotal);
-*/
+
     var weatherAlerts = document.createElement("div");
     weatherAlerts.className = "small bright weather-alert";
  
