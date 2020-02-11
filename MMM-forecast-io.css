@@ -92,3 +92,14 @@
   padding-right: 0.3em;
   padding-left: 0.3em;
 }
+
+.MMM-forecast-io .weather-alert > span.wi {
+  text-align: center;
+  padding-right: 0.3em;
+  padding-left: 0.3em;
+}
+
+.MMM-forecast-io .humidity-dew-point > span.wi {
+  padding-right: 0.3em;
+  padding-left: 0.3em;
+}

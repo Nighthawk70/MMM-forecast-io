@@ -6,7 +6,7 @@ Module.register("MMM-forecast-io", {
     units: config.units,
     language: config.language,
     showIndoorTemperature: false,
-    updateInterval: 5 * 60 * 1000, // every 5 minutes
+    updateInterval: 10 * 60 * 1000, // every 5 minutes
     animationSpeed: 1000,
     initialLoadDelay: 0, // 0 seconds delay
     retryDelay: 2500,
@@ -176,7 +176,7 @@ Module.register("MMM-forecast-io", {
 
     var temperature = document.createElement("span");
     temperature.className = "bright";
-    temperature.innerHTML = " " + this.temp + "&deg;";
+    temperature.innerHTML = " " + this.temp + "&deg;" + " ";
     large.appendChild(temperature);
 
     if (this.roomTemperature !== undefined) {
@@ -206,8 +206,27 @@ Module.register("MMM-forecast-io", {
       var windSpeedUnit = "mph";
     }
 
-    windSpeed.innerHTML = " " + cardinalDirection + " " + Math.round(currentWeather.windSpeed) + "-" + Math.round(currentWeather.windGust) + windSpeedUnit;
+    windSpeed.innerHTML = " " + cardinalDirection + " " + Math.round(currentWeather.windSpeed) + "-" + Math.round(currentWeather.windGust) + windSpeedUnit + " | Feels Like: " + Math.round(currentWeather.apparentTemperature) + "&deg;";
     wind.appendChild(windSpeed);
+
+    var humidityDew = document.createElement("div");
+    humidityDew.className = "small dimmed humidity-dew-point";
+
+    var dewPointIcon = document.createElement("span");
+    dewPointIcon.className = "Dew Point: ";
+    humidityDew.appendChild(dewPointIcon);
+
+    var dewPoint = document.createElement("span");
+    dewPoint.innerHTML = "Dew Point: " + Math.round(currentWeather.dewPoint) + "&deg;" + " | ";
+    humidityDew.appendChild(dewPoint);
+
+    var humidityIcon = document.createElement("span");
+    humidityIcon.className = "Humidity: ";
+    humidityDew.appendChild(humidityIcon);
+
+    var humidity = document.createElement("span");
+    humidity.innerHTML = "Humidity: " + this.weatherData.currently.humidity * 100 + "%";
+    humidityDew.appendChild(humidity);
 
     var sunriseSunset = document.createElement("div");
     sunriseSunset.className = "small dimmed sunrise-sunset";
@@ -225,23 +244,45 @@ Module.register("MMM-forecast-io", {
     sunriseSunset.appendChild(sunsetIcon);
 
     var sunsetTime = document.createElement("span");
-    sunsetTime.innerHTML = moment(new Date(daily.data[0].sunsetTime * 1000)).format("LT");
+    sunsetTime.innerHTML = moment(new Date(daily.data[0].sunsetTime * 1000)).format("LT") + " ";
     sunriseSunset.appendChild(sunsetTime);
-    
-    var summaryText = minutely ? minutely.summary : hourly.summary;
+/*   
+    var daylightTotal = document.createElement("span");
+    var rise = this.daily.data[0].sunriseTime;
+    var set = this.daily.data[0].sunsetTime;
+    daylightTotal.innerHTML = moment.duration(set.diff(rise));
+    sunriseSunset.appendChild(daylightTotal);
+*/
+    var weatherAlerts = document.createElement("div");
+    weatherAlerts.className = "small bright weather-alert";
+ 
+    if (this.weatherData.alerts !== undefined) {
+      
+      var warningIcon = document.createElement("span");
+      warningIcon.className = "fas fa-exclamation-triangle";
+      weatherAlerts.appendChild(warningIcon);
+      
+      var alert = document.createElement("span");
+      alert.innerHTML = " " + this.weatherData.alerts[0].title + " - " + " Expires: " + moment(new Date(this.weatherData.alerts[0].expires * 1000)).format("MMM DD hh:mm A");
+      weatherAlerts.appendChild(alert);
+    }
+        
+    var summaryText = this.weatherData.minutely.summary + " " + this.weatherData.hourly.summary + " " + this.weatherData.daily.summary;
     var summary = document.createElement("div");
     summary.className = "small dimmed summary";
     summary.innerHTML = summaryText;
 
-    wrapper.appendChild(large);
     wrapper.appendChild(summary);
- 
-    if (this.config.showSunriseSunset) {
-      wrapper.appendChild(sunriseSunset);
-    }
+    wrapper.appendChild(large);
 
     if (this.config.showWind) {
       wrapper.appendChild(wind);
+    }
+     
+    wrapper.appendChild(humidityDew); 
+           
+    if (this.config.showSunriseSunset) {
+      wrapper.appendChild(sunriseSunset);
     }
 
     if (this.config.alwaysShowPrecipitationGraph ||
@@ -249,6 +290,8 @@ Module.register("MMM-forecast-io", {
          this.isAnyPrecipitation(minutely))) {
       wrapper.appendChild(this.renderPrecipitationGraph());
     }
+
+    wrapper.appendChild(weatherAlerts);
 
     if (this.config.showForecast) {
       wrapper.appendChild(this.renderWeatherForecast());
