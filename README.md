@@ -1,11 +1,16 @@
-# MMM-Forecast-IO
+# MMM-Forecast-IO (w/ Weather Alerts)
 This an extension for [MagicMirror](https://github.com/MichMich/MagicMirror) that adds localized weather using the [Dark Sky API](https://darksky.net/dev/) (originally Forecast.io) -- the same service that powers the [Dark Sky App](https://darksky.net/app/).
+
+<i>This is my first attempt at anything coding/JS. Thanks to dmcinnes for a great module for me to learn from and build off of. (And FlatPepsi for the colorized icons). In searching around for a MM module that has weather alerts I noticed that people were looking for the same thing and believe this should hopefully satisfy some of that. I hope this works well for others. As I learn more I hope to continue to improve this.</i>
 
 This module makes use of the [geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation) to determine the location of the mirror. This can be turned off by setting `latitude` and `longitude` in the module's config (see [Configuration options below](#configuration-options)).
 
 Unless running headless in a browser, Geolocation requires setting the [GOOGLE_API_KEY environment variable](https://github.com/electron/electron/blob/master/docs/api/environment-variables.md#google_api_key).
 
-![screenshot](screenshot.png)
+Existing Look<br>![screenshot](screenshot.png)
+
+New Look w/ active Alert<br>![screenshot](Alert.png)
+<br>New Look w/p no active Alert<br>![screenshot](No-Alert.png)
 
 ## Using the module
 
