@@ -168,6 +168,8 @@ Module.register("MMM-forecast-io", {
     var large = document.createElement("div");
     large.className = "large light";
 
+//========== Current Weather
+
     var icon = currentWeather ? currentWeather.icon : hourly.icon;
     var iconClass = this.config.iconTable[icon];
     var icon = document.createElement("span");
@@ -179,17 +181,20 @@ Module.register("MMM-forecast-io", {
     temperature.innerHTML = " " + this.temp + "&deg;" + " ";
     large.appendChild(temperature);
 
-    if (this.roomTemperature !== undefined) {
-      var icon = document.createElement("span");
-      icon.className = 'fa fa-home';
-      large.appendChild(icon);
+//========== Feels Like Temp
 
-      var temperature = document.createElement("span");
-      temperature.className = "bright";
-      temperature.innerHTML = " " + this.roomTemperature + "&deg;";
-      large.appendChild(temperature);
-    }
+    var feelsLike = document.createElement("span");
+    feelsLike.className = "small dimmed";
+    feelsLike.innerHTML = "Feels Like: ";
+    large.appendChild(feelsLike);
 
+    var feelsLike = document.createElement("span");
+    feelsLike.className = "mlarge dimmed";
+    feelsLike.innerHTML = " " + Math.round(currentWeather.apparentTemperature) + "&deg;";
+    large.appendChild(feelsLike);
+
+//========== Wind
+    
     var wind = document.createElement("div");
     wind.className = "small dimmed wind";
 
@@ -206,8 +211,10 @@ Module.register("MMM-forecast-io", {
       var windSpeedUnit = "mph";
     }
 
-    windSpeed.innerHTML = " " + cardinalDirection + " " + Math.round(currentWeather.windSpeed) + "-" + Math.round(currentWeather.windGust) + windSpeedUnit + " | Feels Like: " + Math.round(currentWeather.apparentTemperature) + "&deg;";
+    windSpeed.innerHTML = " " + cardinalDirection + " " + Math.round(currentWeather.windSpeed) + "-" + Math.round(currentWeather.windGust) + windSpeedUnit;
     wind.appendChild(windSpeed);
+
+//========== Humidity and Dew Point
 
     var humidityDew = document.createElement("div");
     humidityDew.className = "small dimmed humidity-dew-point";
@@ -227,6 +234,8 @@ Module.register("MMM-forecast-io", {
     var humidity = document.createElement("span");
     humidity.innerHTML = "Humidity: " + this.weatherData.currently.humidity * 100 + "%";
     humidityDew.appendChild(humidity);
+    
+//========= Sunrise/Sunset/Day Length    
     
     var sunriseSunset = document.createElement("div");
     sunriseSunset.className = "small dimmed sunrise-sunset";
@@ -251,6 +260,8 @@ Module.register("MMM-forecast-io", {
     sunsetTime.innerHTML = moment(new Date(daily.data[0].sunsetTime * 1000)).format("LT") + " ";
     sunriseSunset.appendChild(sunsetTime);
 
+//========== Weather Alerts
+
     var weatherAlerts = document.createElement("div");
     weatherAlerts.className = "small bright weather-alert";
  
@@ -261,9 +272,11 @@ Module.register("MMM-forecast-io", {
       weatherAlerts.appendChild(warningIcon);
       
       var alert = document.createElement("span");
-      alert.innerHTML = " " + this.weatherData.alerts[0].title + " - " + " Expires: " + moment(new Date(this.weatherData.alerts[0].expires * 1000)).format("MMM DD hh:mm A");
+      alert.innerHTML = " " + this.weatherData.alerts[0].title + " - " + " Ends: " + moment(new Date(this.weatherData.alerts[0].expires * 1000)).format("MMM DD hh:mm A");
       weatherAlerts.appendChild(alert);
     }
+
+//========== Weather Summary
         
     var summaryText = this.weatherData.minutely.summary + " " + this.weatherData.hourly.summary + " " + this.weatherData.daily.summary;
     var summary = document.createElement("div");
@@ -315,7 +328,7 @@ Module.register("MMM-forecast-io", {
   renderPrecipitationGraph: function () {
     var i;
     var width = this.config.precipitationGraphWidth;
-    var height = Math.round(width * 0.3);
+    var height = Math.round(width * 0.25);
     var element = document.createElement('canvas');
     element.className = "precipitation-graph";
     element.width  = width;
