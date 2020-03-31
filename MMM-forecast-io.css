@@ -1,4 +1,4 @@
-.MMM-forecast-io {
+﻿.MMM-forecast-io {
 }
 
 .MMM-forecast-io .big-icon {
@@ -10,7 +10,14 @@
   transform: translate(0, -3px);
 }
 
+.MMM-forecast-io .feels-like {
+  font-size: 75%;
+  line-height: 65px;
+  display: block;
+}
+
 .MMM-forecast-io .summary {
+  text-align: right;
   width: 400px;
 }
 
@@ -32,6 +39,7 @@
   text-align: left;
   padding-right: 0.2em;
 }
+
 .MMM-forecast-io .forecast-row .weathericon {
   text-align: center;
   padding-right: 0.5em;
@@ -73,11 +81,11 @@
 }
 
 .small.MMM-forecast-io .summary {
-  width: 300px;
+  width: 400px;
 }
 
 .small.MMM-forecast-io .precipitation-graph {
-  width: 300px;
+  width: 400px;
 }
 
 .small.MMM-forecast-io .forecast-row {
@@ -102,4 +110,13 @@
 .MMM-forecast-io .humidity-dew-point > span.wi {
   padding-right: 0.3em;
   padding-left: 0.3em;
+}
+
+.MMM-forecast-io .feels-like > span.wi {
+  padding-right: 0.3em;
+  padding-left: 0.3em;
+  font-size: 75%;
+  line-height: 65px;
+  display: block;
+  text-align: top;
 }

@@ -22,7 +22,7 @@ Module.register("MMM-forecast-io", {
     maxDaysForecast: 7,   // maximum number of days to show in forecast
     showWind: true,
     showSunriseSunset: true,
-    enablePrecipitationGraph: true,
+    enablePrecipitationGraph: false,
     alwaysShowPrecipitationGraph: false,
     showDailyPrecipitationChance: true,
     precipitationGraphWidth: 400,
@@ -184,12 +184,12 @@ Module.register("MMM-forecast-io", {
 //========== Feels Like Temp
 
     var feelsLike = document.createElement("span");
-    feelsLike.className = "small dimmed";
+    feelsLike.className = "small normal";
     feelsLike.innerHTML = "Feels Like: ";
     large.appendChild(feelsLike);
 
     var feelsLike = document.createElement("span");
-    feelsLike.className = "mlarge dimmed";
+    feelsLike.className = "mlarge normal";
     feelsLike.innerHTML = " " + Math.round(currentWeather.apparentTemperature) + "&deg;";
     large.appendChild(feelsLike);
 
@@ -224,15 +224,15 @@ Module.register("MMM-forecast-io", {
     humidityDew.appendChild(dewPointIcon);
 
     var dewPoint = document.createElement("span");
-    dewPoint.innerHTML = "Dew Point: " + Math.round(currentWeather.dewPoint) + "&deg;" + " | ";
+    dewPoint.innerHTML = "Dew Point: " + Math.round(currentWeather.dewPoint) + "&deg;";
     humidityDew.appendChild(dewPoint);
 
     var humidityIcon = document.createElement("span");
-    humidityIcon.className = "Humidity: ";
+    humidityIcon.className = " wi wi-humidity ";
     humidityDew.appendChild(humidityIcon);
 
     var humidity = document.createElement("span");
-    humidity.innerHTML = "Humidity: " + this.weatherData.currently.humidity * 100 + "%";
+    humidity.innerHTML = "Humidity: " + Math.round(this.weatherData.currently.humidity * 100) + "%";
     humidityDew.appendChild(humidity);
     
 //========= Sunrise/Sunset/Day Length    
@@ -272,12 +272,14 @@ Module.register("MMM-forecast-io", {
       weatherAlerts.appendChild(warningIcon);
       
       var alert = document.createElement("span");
-      alert.innerHTML = " " + this.weatherData.alerts[0].title + " - " + " Ends: " + moment(new Date(this.weatherData.alerts[0].expires * 1000)).format("MMM DD hh:mm A");
+      alert.innerHTML = " " + this.weatherData.alerts[0].title + "<br>" + "<b>Start:</b> " + moment(new Date(this.weatherData.alerts[0].time * 1000)).format("MMM DD hh:mm A") + " | <b>End:</b> " + moment(new Date(this.weatherData.alerts[0].expires * 1000)).format("MMM DD hh:mm A")/* + "<br>" + this.weatherData.alerts[0].description*/;
       weatherAlerts.appendChild(alert);
     }
 
 //========== Weather Summary
-        
+    
+	wrapper.appendChild(weatherAlerts);
+    
     var summaryText = this.weatherData.minutely.summary + " " + this.weatherData.hourly.summary + " " + this.weatherData.daily.summary;
     var summary = document.createElement("div");
     summary.className = "small dimmed summary";
@@ -302,8 +304,6 @@ Module.register("MMM-forecast-io", {
       wrapper.appendChild(this.renderPrecipitationGraph());
     }
 
-    wrapper.appendChild(weatherAlerts);
-
     if (this.config.showForecast) {
       wrapper.appendChild(this.renderWeatherForecast());
     }
@@ -324,6 +324,8 @@ Module.register("MMM-forecast-io", {
     }
     return false;
   },
+
+// =====================Precipitation Graph
 
   renderPrecipitationGraph: function () {
     var i;
