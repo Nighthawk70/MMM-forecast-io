@@ -12,6 +12,11 @@ Existing Look<br>![screenshot](screenshot.png)
 New Look w/ active Alert<br>![screenshot](Alert.png)
 <br>New Look w/p no active Alert<br>![screenshot](No-Alert.png)
 
+NightHawk70 addition: 
+Added ability to configure module for a large banner for alerts to grab your attention.  New config setting: <b>showWarningOnly</b>.  The new setting will have to be set to true or false.  When true the banner is only item that will show. You can set this up as a secondary module in Magic Mirror. When you set to 'true' it will not show any other items in the module. 
+
+Added ability to store the weather data from the forecast-io API on your PC for the 'updateInterval' value.  This will eliminate additional calls to the API and is especially useful if you have the omdoule added more than once. 
+
 ## Using the module
 
 To use this module, add it to the modules array in the `config/config.js` file:
@@ -26,6 +31,20 @@ modules: [
       // Only required if geolocation doesn't work:
       latitude:   16.77532,
       longitude: -3.008265
+    }
+  }
+  // Optional: (Nighthawk70 add) -- Large visible banner for weather alerts. Shows only banner nothing else. 
+  {
+    module: 'MMM-forecast-io',
+    position: 'lower_third',  // This can be any of the regions.
+    config: {
+      // See 'Configuration options' for more information.
+      apiKey: 'abcde12345abcde12345abcde12345ab', // Dark Sky API key.
+      // Only required if geolocation doesn't work:
+      latitude:   16.77532,
+      longitude: -3.008265,
+      showForecast: false,
+      showWarningOnly: true,
     }
   }
 ]
@@ -182,6 +201,12 @@ modules: [
       <td><code>showDailyPrecipitationChance</code></td>
       <td>Toggles display of the precipitation probability for each day.<br>
         <br><b>Default value:</b>  <code>true</code>
+      </td>
+    </tr>
+      <tr>
+      <td><code>showWarningOnly</code></td>
+      <td>Toggles the warning banner for weather warnings (if any). Valid values: true = show banner or false = do not shot banner<br>
+        <br><b>Default value:</b>  <code>false</code>
       </td>
     </tr>
     <tr>

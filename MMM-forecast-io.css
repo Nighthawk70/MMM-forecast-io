@@ -107,9 +107,20 @@
   padding-left: 0.3em;
 }
 
+/* Nighthawk 70 add for alert banner */
+.MMM-forecast-io .weather-alert-banner {
+    width: 100%;
+    height: 100px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+}
+
 .MMM-forecast-io .humidity-dew-point > span.wi {
-  padding-right: 0.3em;
-  padding-left: 0.3em;
+    padding-right: 0.3em;
+    padding-left: 0.3em;
 }
 
 .MMM-forecast-io .feels-like > span.wi {
